@@ -1,0 +1,122 @@
+CREATE DATABASE CacMovies;
+
+USE CacMovies;
+
+
+CREATE TABLE Categorias( id INT PRIMARY KEY auto_increment,
+nombre VARCHAR(15),
+descripcion VARCHAR(255)
+);
+
+
+CREATE TABLE Peliculas( id INT PRIMARY KEY auto_increment,
+titulo VARCHAR(25) not null,
+año_estreno INT,
+duracion TIME,
+portada longblob,
+id_categoria int,
+foreign key (id_categoria) references Categorias(id)
+);
+
+DROP database Biblioteca;
+
+USE CacMovies;
+
+Insert into Categorias(nombre,descripcion) values('Popular','Peliculas mas vistas en el ultimo anio segun Netflix');
+
+SELECT * FROM Categorias;
+
+
+
+USE CaCMovies;
+
+SELECT * FROM Categorias;
+
+SELECT nombre FROM Categorias;
+
+SELECT nombre, descripcion FROM Categorias;
+
+INSERT INTO Categorias(nombre,descripcion) values('Aclamadas','Peliculas mas vistas en netflix, hbo, prime video');
+
+INSERT INTO Categorias(nombre,descripcion) values('En oferta','Peliculas con un descuento por tiempo limitado');
+
+SELECT * FROM Categorias WHERE nombre = 'Aclamadas';
+
+INSERT INTO Categorias(nombre,descripcion) values('Aclamadas','Peliculas mas vistas en mercado libre');
+
+SELECT * FROM Categorias WHERE nombre = 'Aclamadas';
+
+UPDATE Categorias SET descripcion = 'nueva descripcion' where id = 1;
+
+SELECT * FROM Categorias;
+
+DELETE FROM Categorias WHERE id = 3;
+
+SELECT * FROM Categorias;
+
+DELETE FROM Categorias WHERE nombre = 'Aclamadas';
+
+SELECT * FROM Categorias;
+
+INSERT INTO Peliculas(titulo) values('the matrix');
+
+SELECT * FROM Peliculas;
+
+INSERT INTO Peliculas(titulo,id_categoria) values ('mario bros',1);
+
+SELECT * FROM Peliculas;
+
+SELECT * FROM Categorias;
+
+INSERT INTO Peliculas(titulo,año_estreno,duracion,id_categoria) values ('shrek',2010,'01:16:20',1);
+
+INSERT INTO Peliculas(titulo,año_estreno,duracion,id_categoria) values ('shrek 2',2018,'01:30:20',1),('shrek 3',2021,'02:15:00',1);
+
+SELECT * FROM Peliculas WHERE año_estreno < 2010;
+
+
+
+USE CaCMovies;
+
+INSERT INTO Peliculas(titulo,año_estreno,duracion,portada,id_categoria) VALUES ('The Super Mario Bros', 2023,'02:15:03', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\mario.jpg'),2);
+
+
+SELECT * FROM Peliculas;
+
+
+
+DELETE FROM Peliculas WHERE id = 2;
+
+
+/*CONSULTAS*/
+
+SELECT Peliculas.titulo , Categorias.nombre
+FROM Peliculas INNER JOIN Categorias ON Peliculas.id_categoria = Categorias.id;
+
+SELECT Peliculas.titulo , Categorias.nombre
+FROM Peliculas LEFT JOIN Categorias ON Peliculas.id_categoria = Categorias.id;
+
+SELECT Peliculas.titulo , Categorias.nombre
+FROM Peliculas right JOIN Categorias ON Peliculas.id_categoria = Categorias.id;
+
+SELECT * FROM Categorias;
+
+
+SELECT COUNT(*) AS Total_peliculas , SUM(TIME_TO_SEC(duracion)) AS Total_seg FROM Peliculas;
+
+SELECT * FROM Peliculas;
+
+SELECT AVG(año_estreno) AS promedio_estreno FROM Peliculas; 
+
+SELECT MAX(año_estreno) AS año_pelicula_reciente FROM Peliculas;
+
+SELECT * FROM Peliculas;
+
+SELECT MIN(año_estreno) AS año_pelicula_mas_antigua FROM Peliculas;
+
+SELECT * FROM Peliculas ORDER BY año_estreno DESC; 
+
+SELECT * FROM Peliculas ORDER BY año_estreno ASC; 
+
+SELECT titulo, año_estreno FROM Peliculas 
+WHERE año_estreno = (SELECT MAX(año_estreno) FROM Peliculas); /*where año_estreno = 2023 */
